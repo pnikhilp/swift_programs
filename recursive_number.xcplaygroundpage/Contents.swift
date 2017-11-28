@@ -1,5 +1,6 @@
 
 
+
 let single = ["","one","two","three","four","five","six","seven","eight","nine"]
 let dbl = ["ten","eleven","twelve","thirteen","fourteen","fifteen","sixteen","seventeen","eighteen","nineteen"]
 let tenmulty = ["","","twenty","thirty","fourty","fifty","sixty","seventy","eighty","ninety"]
@@ -34,6 +35,7 @@ func hundred(number:Int)->String{
     let num = number
     let n = num%100
     var word = " "
+
     word = oneToNine(number: num/100)+" "+tpower[0]+" "+oneToNine(number: num%10)
     if n/10 == 1{
         word = oneToNine(number: num/100)+" "+tpower[0]+" "+tenToNineteen(number: num%100)
@@ -41,6 +43,7 @@ func hundred(number:Int)->String{
     if n/10 > 1{
          word = oneToNine(number: num/100)+" "+tpower[0]+" "+twentyTon(number: num%100)
     }
+
     return word
 }
 
@@ -72,22 +75,32 @@ func tenthousand(number:Int)->String{
     let n = num%1000
     var word = " "
     
-    if num/1000 < 20{
-     word = tenToNineteen(number: num/1000)+"thousand"+hundred(number: n)
-    }
-    if num/1000 > 20{
-     word = twentyTon(number: num/1000)+"thousand"+hundred(number: n)
+    if num/1000 >= 20{
+     word = twentyTon(number: num/1000)+" thousand "+hundred(number: n)
     }
     if n < 100{
-      word = twentyTon(number: num/1000)+"thousand"+twentyTon(number: n)
+      word = twentyTon(number: num/1000)+" thousand "+twentyTon(number: n)
         if n < 20{
-            word = twentyTon(number: num/1000)+"thousand"+tenToNineteen(number: n)
+            word = twentyTon(number: num/1000)+" thousand "+tenToNineteen(number: n)
         }
         if n < 10{
-            word = twentyTon(number: num/1000)+"thousand"+oneToNine(number: n)
+            word = twentyTon(number: num/1000)+" thousand "+oneToNine(number: n)
         }
-        
     }
+        if num/1000 < 20{
+              word = tenToNineteen(number: num/1000)+" thousand "+hundred(number: n)
+           if n < 100{
+                word = tenToNineteen(number: num/1000)+" thousand "+twentyTon(number: n)
+            }
+            if n < 20{
+                word = tenToNineteen(number: num/1000)+" thousand "+tenToNineteen(number: n)
+            }
+            if n < 10{
+                word = tenToNineteen(number: num/1000)+" thousand "+oneToNine(number: n)
+            }
+
+        }
+
     return word
 }
 
@@ -110,7 +123,7 @@ func numberToWord(number:Int)->String{
         word = hundred(number: num)
     case 1000...9999:
         word = thousand(number: num)
-   case 10000...99999:
+    case 10000...99999:
         word = tenthousand(number: num)
     default:
         word = "Enter number between 0 and 100000"
@@ -120,4 +133,4 @@ func numberToWord(number:Int)->String{
 
 }
 
-print(numberToWord(number: 90008))
+print(numberToWord(number:90021))
