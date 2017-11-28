@@ -1,4 +1,5 @@
 
+
 let single = ["","one","two","three","four","five","six","seven","eight","nine"]
 let dbl = ["ten","eleven","twelve","thirteen","fourteen","fifteen","sixteen","seventeen","eighteen","nineteen"]
 let tenmulty = ["","","twenty","thirty","fourty","fifty","sixty","seventy","eighty","ninety"]
@@ -70,10 +71,25 @@ func tenthousand(number:Int)->String{
     let num = number
     let n = num%1000
     var word = " "
+    
+    if num/1000 < 20{
      word = tenToNineteen(number: num/1000)+"thousand"+hundred(number: n)
+    }
+    if num/1000 > 20{
+     word = twentyTon(number: num/1000)+"thousand"+hundred(number: n)
+    }
+    if n < 100{
+      word = twentyTon(number: num/1000)+"thousand"+twentyTon(number: n)
+        if n < 20{
+            word = twentyTon(number: num/1000)+"thousand"+tenToNineteen(number: n)
+        }
+        if n < 10{
+            word = twentyTon(number: num/1000)+"thousand"+oneToNine(number: n)
+        }
+        
+    }
     return word
 }
-
 
 func numberToWord(number:Int)->String{
     
@@ -104,4 +120,4 @@ func numberToWord(number:Int)->String{
 
 }
 
-print(numberToWord(number: 1000))
+print(numberToWord(number: 90008))
