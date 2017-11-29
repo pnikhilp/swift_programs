@@ -7,20 +7,20 @@ let tenmulty = ["","","twenty","thirty","fourty","fifty","sixty","seventy","eigh
 let tpower = ["hundred","thousand","lakh","million"]
 
 
-func oneToNine(number:Int)->String{
+func oneToNine(number:Int)->String{ //Convert number between 1 - 9
     let num = number
     var word = " "
     word = single[num]
     return word
 }
-func tenToNineteen(number:Int)->String{
+func tenToNineteen(number:Int)->String{ //Convert number between 10 -19
     let num = number
     var word = " "
     word = dbl[num%10]
     return word
     
 }
-func twentyTon(number:Int)->String{
+func twentyTon(number:Int)->String{ //Convert number between 20 - 99
     let num = number
     var word = " "
     if num%10 == 0{
@@ -31,7 +31,7 @@ func twentyTon(number:Int)->String{
     
 }
 
-func hundred(number:Int)->String{
+func hundred(number:Int)->String{ // number between 100 - 999
     let num = number
     let n = num%100
     var word = " "
@@ -47,7 +47,7 @@ func hundred(number:Int)->String{
     return word
 }
 
-func thousand(number:Int)->String{
+func thousand(number:Int)->String{ //between 1000 - 9999
     let num = number
     let n = num%1000
     var word = " "
@@ -70,7 +70,7 @@ func thousand(number:Int)->String{
     return word
 }
 
-func tenthousand(number:Int)->String{
+func tenthousand(number:Int)->String{ //Between 10000 - 99999
     let num = number
     let n = num%1000
     var word = " "
@@ -104,6 +104,43 @@ func tenthousand(number:Int)->String{
     return word
 }
 
+func largenumber(number: Int)->String{  //Number between 100000 - 1000000
+    let r = number%10000
+    let p = number/10000
+    let q = p%10
+      let num = number
+      let n = num/100000
+      var word = " "
+   
+    if n < 10{
+      word = oneToNine(number: n)+" "+tpower[2]+tenthousand(number: num%100000)
+        if q == 0{
+        switch r {
+        case 0:
+            word = "one "+tpower[2]
+        case 1000...9999:
+            word = oneToNine(number: n)+" "+tpower[2]+thousand(number: r)
+        case 100...999:
+            word = oneToNine(number: n)+" "+tpower[2]+hundred(number: r)
+        case 20...99:
+            word = oneToNine(number: n)+" "+tpower[2]+twentyTon(number: r)
+        case 10...19:
+            word = oneToNine(number: n)+" "+tpower[2]+tenToNineteen(number: r)
+        case 1...9:
+            word = oneToNine(number: n)+" "+tpower[2]+oneToNine(number: r)
+        default:
+            word = ""
+        }
+     }
+
+    }
+    else{
+        word = "one million"
+    }
+        return word
+}
+
+
 func numberToWord(number:Int)->String{
     
     var word = " "
@@ -125,8 +162,10 @@ func numberToWord(number:Int)->String{
         word = thousand(number: num)
     case 10000...99999:
         word = tenthousand(number: num)
+    case 100000...1000000:
+        word = largenumber(number: num)
     default:
-        word = "Enter number between 0 and 100000"
+        word = "Enter number between 0 and 1000000"
     }
   
     return word
