@@ -172,4 +172,4 @@ func numberToWord(number:Int)->String{
 
 }
 
-print(numberToWord(number:90021))
+print(numberToWord(number:912021))
