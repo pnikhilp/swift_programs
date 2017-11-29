@@ -1,161 +1,171 @@
 
+
 let single = ["","one","two","three","four","five","six","seven","eight","nine"]
 let dbl = ["ten","eleven","twelve","thirteen","fourteen","fifteen","sixteen","seventeen","eighteen","nineteen"]
 let tenmulty = ["","","twenty","thirty","fourty","fifty","sixty","seventy","eighty","ninety"]
-let tpower = ["hundred","thousand","lakh"]
+let tpower = ["hundred","thousand","lakh","million"]
 
-func tenton(number:Int)->String{ //Function to convert between 0 and 99
+
+func oneToNine(number:Int)->String{ //Convert number between 1 - 9
     let num = number
-    let div = num/10
     var word = " "
+    word = single[num]
+    return word
+}
+func tenToNineteen(number:Int)->String{ //Convert number between 10 - 19
+    let num = number
+    var word = " "
+    word = dbl[num%10]
+    return word
     
-    if div == 0{ //Convert number between 0 and 9
-        
-        let rem = num % 10
-        word = single[rem]
-        if number == 0{
-            word = "zero"
-        }
+}
+func twentyTon(number:Int)->String{  //Convert number between 20 - 99
+    let num = number
+    var word = " "
+    if num%10 == 0{
+        word = tenmulty[num/10]
     }
+    word = tenmulty[num/10]+" "+oneToNine(number: num%10)
+    return word
     
-    if div == 1{  //Convert number between 10 and 19
-        let rem = num % 10
-        word = dbl[rem]
+}
+
+func hundred(number:Int)->String{  //Convert number between 100 - 999
+    let num = number
+    let n = num%100
+    var word = " "
+
+    word = oneToNine(number: num/100)+" "+tpower[0]+" "+oneToNine(number: num%10)
+    if n/10 == 1{
+        word = oneToNine(number: num/100)+" "+tpower[0]+" "+tenToNineteen(number: num%100)
     }
-    
-    if div != 0 && div != 1 && div < 10{ //Convert number between 20 and 99
-        
-        let rem = num % 10
-        
-        if rem != 0 {
-            word = tenmulty[div]+" "+single[rem]
-        }else{
-            word = tenmulty[div]
-        }
-        
+    if n/10 > 1{
+         word = oneToNine(number: num/100)+" "+tpower[0]+" "+twentyTon(number: num%100)
     }
-    
+
     return word
 }
 
-func hundred(number:Int)->String{  //Function to convert between 100 and 999
-    
-    var word = " "
+func thousand(number:Int)->String{  //Convert number between 1000 - 9999
     let num = number
-    let div = num / 10
-    var h = div
-    h /= 10
-    let s = div%10
+    let n = num%1000
+    var word = " "
+ 
+      word = oneToNine(number: num/1000)+" "+tpower[1]+" "+hundred(number: n)
+ if n < 100{
     
-    if s == 1{
-        let sr = num%10
-        word = single[h]+" "+tpower[0]+" and "+dbl[sr]
-    }else{
-        
-        let newnum = number
-        
-        var m = newnum/10
-        let r = newnum%10
-        m %= 10
-        
-        if m == 0 && r != 0{
-            word = single[h]+" "+tpower[0]+" and "+single[r]
-            
-        }else{
-            
-            let rem = newnum % 10
-            
-            switch rem {
-            case 0:
-                var f = newnum % 100
-                f /= 10
-                word = single[h]+" "+tenmulty[f]
-                
-            case 1,2,3,4,5,6,7,8,9:
-                var f = newnum % 100
-                f /= 10
-                word = single[h]+" "+tenmulty[f]+" "+single[rem]
-                
-            default:
-                word = single[h]+" "+tpower[0]+" "+single[rem]
-            }
-            
+    if n < 99{
+        word = oneToNine(number: num/1000)+" "+tpower[1]+" "+twentyTon(number: n)
+    }
+    if n < 20{
+        word = oneToNine(number: num/1000)+" "+tpower[1]+" "+tenToNineteen(number: n)
+    }
+    if n < 10{
+        word = oneToNine(number: num/1000)+" "+tpower[1]+" "+oneToNine(number: n)
+     }
+    }
+    return word
+}
+
+func tenthousand(number:Int)->String{   //Convert number between 10000 - 99999
+    let num = number
+    let n = num%1000
+    var word = " "
+    
+    if num/1000 >= 20{
+        switch n {
+        case 100...999:
+            word = twentyTon(number: num/1000)+" thousand "+hundred(number: n)
+        case 20...99:
+            word = twentyTon(number: num/1000)+" thousand "+twentyTon(number: n)
+        case 10...19:
+            word = twentyTon(number: num/1000)+" thousand "+tenToNineteen(number: n)
+        default:
+            word = twentyTon(number: num/1000)+" thousand "+oneToNine(number: n)
         }
-        
-        if newnum%100 == 0{
-            word = single[h]+" "+tpower[0]
+    }
+    if num/1000 < 20{
+        switch n {
+        case 100...999:
+            word = tenToNineteen(number: num/1000)+" thousand "+hundred(number: n)
+        case 20...99:
+            word = tenToNineteen(number: num/1000)+" thousand "+twentyTon(number: n)
+        case 10...19:
+            word = tenToNineteen(number: num/1000)+" thousand "+tenToNineteen(number: n)
+        default:
+            word = tenToNineteen(number: num/1000)+" thousand "+oneToNine(number: n)
+            
         }
     }
     return word
+}
+
+func largenumber(number: Int)->String{  //Convert number between 100000 - 1000000
+    let r = number%10000
+    let p = number/10000
+    let q = p%10
+      let num = number
+      let n = num/100000
+      var word = " "
+   
+    if n < 10{
+      word = oneToNine(number: n)+" "+tpower[2]+" "+tenthousand(number: num%100000)
+        if q == 0{
+        switch r {
+        case 0:
+            word = "one "+tpower[2]
+        case 1000...9999:
+            word = oneToNine(number: n)+" "+tpower[2]+" "+thousand(number: r)
+        case 100...999:
+            word = oneToNine(number: n)+" "+tpower[2]+" "+hundred(number: r)
+        case 20...99:
+            word = oneToNine(number: n)+" "+tpower[2]+" "+twentyTon(number: r)
+        case 10...19:
+            word = oneToNine(number: n)+" "+tpower[2]+" "+tenToNineteen(number: r)
+        case 1...9:
+            word = oneToNine(number: n)+" "+tpower[2]+" "+oneToNine(number: r)
+        default:
+            word = ""
+        }
+     }
+
+    }
+    else{
+        word = "one million"
+    }
+        return word
 }
 
 
 func numberToWord(number:Int)->String{
     
-    let num = number
     var word = " "
-    
-    let div = num / 10
-    
-    word = tenton(number: num)
 
-    if div >= 10 && div < 100{  //Number between 100 and 999
+    let num = number
+   
+    switch num {
+    case 0:
+        word = "zero"
+    case 1...9:
+        word = oneToNine(number: num)
+    case 10...19:
+        word = tenToNineteen(number: num)
+    case 20...99:
+        word = twentyTon(number: num)
+    case 100...999:
         word = hundred(number: num)
+    case 1000...9999:
+        word = thousand(number: num)
+    case 10000...99999:
+        word = tenthousand(number: num)
+    case 100000...1000000:
+        word = largenumber(number: num)
+    default:
+        word = "Enter number between 0 and 1000000"
     }
-    
-    if div >= 100 && div < 1000{  //Number greater than or 1000
-        
-        let th = num/1000
-        let rh = num%1000
-        let first = num/100
-        let second = num/10
-        
-        if first%10 == 0{
-            word = single[th]+" "+tpower[1]+" and "+tenton(number:rh)
-            if second%10 == 0{
-                word = single[th]+" "+tpower[1]+" "+single[rh]
-            }
-            
-        }else{
-            
-            if num%1000 == 0{
-                word = single[th]+" "+tpower[1]
-            }
-            else{
-                word = single[th]+" "+tpower[1]+" "+hundred(number: num%1000)
-            }
-        }
-        if rh == 0{
-            word = single[th]+" "+tpower[1]
-        }
-    }
-    
-    
-    if div >= 1000{
-
-        let th = num/1000
-        let fnum = num/1000
-        
-        if num/1000 == 0 {
-            word = tenton(number: fnum)+" "+tpower[1]
-            
-        }else{
-            if num%10000 == 0{
-                word = tenton(number:th)+" "+tpower[1]
-            }
-            word = tenton(number: fnum)+" "+tpower[1]+" "+hundred(number: num%1000)
-        }
-        if num%1000 < 100{
-            word = tenton(number:th)+" "+tpower[1]+" "+tenton(number: num%1000)
-            if num%10 == 0{
-                word = tenton(number:th)+" "+tpower[1]
-            }
-        }
-    }
-    if div > 10000{
-        word = single[1]+" "+tpower[2]
-    }
+  
     return word
+
 }
 
-print(numberToWord(number:2001))
+print(numberToWord(number:152481))
